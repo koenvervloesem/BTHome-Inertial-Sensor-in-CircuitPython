@@ -24,7 +24,7 @@ sensor = LSM6DS3(i2c_bus)
 
 class BTHomeAdvertisement:
     _ADV_FLAGS = [0x02, 0x01, 0x06]
-    _ADV_SVC_DATA = [0x06, 0x16, 0xD2, 0xFC, 0x40, 0x21, 0x00]
+    _ADV_SVC_DATA = [0x06, 0x16, 0xD2, 0xFC, 0x40, 0x22, 0x00]
 
     def _name2adv(self, local_name):
         adv_element = bytearray([len(local_name) + 1, 0x09])
@@ -50,9 +50,9 @@ bthome = BTHomeAdvertisement(DEVICE_NAME)
 
 while True:
     gyro_x, gyro_y, gyro_z = sensor.gyro
-    motion = gyro_x**2 + gyro_y**2 + gyro_z**2
-    if motion > SENSITIVITY:
-        print("Motion")
+    moving = gyro_x**2 + gyro_y**2 + gyro_z**2
+    if moving > SENSITIVITY:
+        print("Moving")
         adv_data = bthome.adv_data(1)
     else:
         adv_data = bthome.adv_data(0)
